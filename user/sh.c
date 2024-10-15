@@ -38,7 +38,7 @@ struct pipecmd {
   struct cmd *right;
 };
 
-struct listcmd {
+struct listcmd {   //read the command line
   int type;
   struct cmd *left;
   struct cmd *right;
@@ -46,7 +46,7 @@ struct listcmd {
 
 struct backcmd {
   int type;
-  struct cmd *cmd;
+  struct cmd *cmd; //point to back node
 };
 
 int fork1(void);  // Fork but panics on failure.
@@ -59,7 +59,7 @@ void
 runcmd(struct cmd *cmd)
 {
   int p[2];
-  struct backcmd *bcmd;
+  struct backcmd *bcmd;        
   struct execcmd *ecmd;
   struct listcmd *lcmd;
   struct pipecmd *pcmd;
@@ -132,7 +132,7 @@ runcmd(struct cmd *cmd)
 }
 
 int
-getcmd(char *buf, int nbuf)
+getcmd(char *buf, int nbuf)     //read the command line
 {
   write(2, "$ ", 2);
   memset(buf, 0, nbuf);
@@ -326,7 +326,7 @@ struct cmd *parseexec(char**, char*);
 struct cmd *nulterminate(struct cmd*);
 
 struct cmd*
-parsecmd(char *s)
+parsecmd(char *s)     //parse the cmd
 {
   char *es;
   struct cmd *cmd;

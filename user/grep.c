@@ -14,21 +14,21 @@ grep(char *pattern, int fd)
   char *p, *q;
 
   m = 0;
-  while((n = read(fd, buf+m, sizeof(buf)-m-1)) > 0){
-    m += n;
-    buf[m] = '\0';
-    p = buf;
-    while((q = strchr(p, '\n')) != 0){
-      *q = 0;
-      if(match(pattern, p)){
+  while((n = read(fd, buf+m, sizeof(buf)-m-1)) > 0){             //从fd中读取数据，存到缓冲区buf的m位置处
+    m += n;                                                      //更新偏移量
+    buf[m] = '\0';                                               //将新的一行作为一个新的字符串
+    p = buf;                                                     //p初始化指向缓冲区首地址
+    while((q = strchr(p, '\n')) != 0){                           //找到换行符
+      *q = 0;                                                    //临时将换行符作为结束符，方便字符串处理一行
+      if(match(pattern, p)){                                     //匹配字符数组p和条件pattern
         *q = '\n';
         write(1, p, q+1 - p);
       }
-      p = q+1;
+      p = q+1;                                                  //更新P的指向
     }
-    if(m > 0){
+    if(m > 0){                                                  //处理剩余数据
       m -= p - buf;
-      memmove(buf, p, m);
+      memmove(buf, p, m);                                       //将处理过的数据离开缓冲区，使未处理过得数据移动到缓冲区起始位置
     }
   }
 }

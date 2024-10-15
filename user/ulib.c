@@ -69,15 +69,16 @@ gets(char *buf, int max)
   int i, cc;
   char c;
 
+  //loop input a char* to buf 
   for(i=0; i+1 < max; ){
-    cc = read(0, &c, 1);
-    if(cc < 1)
+    cc = read(0, &c, 1);        //read the characters frome the standard input file descriptor 0 and put it in the char c
+    if(cc < 1)    
       break;
     buf[i++] = c;
-    if(c == '\n' || c == '\r')
+    if(c == '\n' || c == '\r')  //finish when read the end of the line 
       break;
   }
-  buf[i] = '\0';
+  buf[i] = '\0';                //to end the position with the '\0'
   return buf;
 }
 

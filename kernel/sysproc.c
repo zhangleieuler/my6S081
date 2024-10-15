@@ -49,20 +49,20 @@ sys_sbrk(void)
 }
 
 uint64
-sys_sleep(void)
+sys_sleep(void)                    //sleep system call 
 {
-  int n;
-  uint ticks0;
+  int n;                           //time of sleep
+  uint ticks0;                     // ticks of current system
 
-  argint(0, &n);
-  acquire(&tickslock);
-  ticks0 = ticks;
-  while(ticks - ticks0 < n){
-    if(killed(myproc())){
+  argint(0, &n);                   //get the arguments,get the first args form user space store to n,
+  acquire(&tickslock);             //get the lock to protect ticks
+  ticks0 = ticks;                  //record the current ticks
+  while(ticks - ticks0 < n){ 
+    if(killed(myproc())){          //check wheter process is killed
       release(&tickslock);
       return -1;
     }
-    sleep(&ticks, &tickslock);
+    sleep(&ticks, &tickslock);      //ticks is the conditional variable
   }
   release(&tickslock);
   return 0;
